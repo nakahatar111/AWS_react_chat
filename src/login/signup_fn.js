@@ -132,19 +132,13 @@ function SignupFn(props) {
   }
   const handleFetch = async () =>{
     if(v_user && v_email && v_password){
-      await fetch(`http://localhost:4000/users/add?name=${v_user}&email=${v_email}&password=${v_password}`)
+      await fetch(`http://ec2-54-159-151-111.compute-1.amazonaws.com:5000/users/add?name=${v_user}&email=${v_email}&password=${v_password}`)
       //.then(handleLogin())
       .catch(err => console.error(err));
       navigate(`../signin/log`, { replace: true });
     }
   }
   
-  const handleLogin = async () =>{
-    await fetch(`http://localhost:4000/users/get?username=${v_user}&password=${v_password}`)
-    .then(response => response.json())
-    .then(response => setLogin(response.data))
-    .catch(err => console.error(err));
-  }
 
   useEffect(()=>{
     if(v_user && v_password){

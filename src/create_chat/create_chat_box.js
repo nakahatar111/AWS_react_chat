@@ -1,6 +1,6 @@
 import react from 'react';
 import React, { Component } from 'react';
-class Create_chat_box extends Component {
+class CreateChatBox extends Component {
   state = {
     add_remove: true
   }
@@ -19,11 +19,11 @@ class Create_chat_box extends Component {
 
   render() { 
     return (<react.Fragment>
-      <a style={this.style} className="list-group-item list-group-item-action">{this.props.user.name}
+      <div style={this.style} className="list-group-item list-group-item-action">{this.props.user.name}
         {this.handleAddBtn()}
-      </a>
+      </div>
     </react.Fragment>);
   }
 }
  
-export default Create_chat_box;
+export default CreateChatBox;

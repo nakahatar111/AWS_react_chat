@@ -2,8 +2,7 @@ import react from 'react';
 import React, { Component } from 'react';
 import Message from '../chat/message';
 import Box from './box';
-import Create_chat from '../create_chat/create_chat';
-import { Spinner } from 'react-bootstrap';
+import CreateChat from '../create_chat/create_chat';
 
 class Inbox extends Component {
   state = {
@@ -15,10 +14,6 @@ class Inbox extends Component {
     time_stamp: '',
     user: '',
     all_user: '',
-  }
-
-  constructor(props){
-    super(props);
   }
 
   componentDidMount(){
@@ -52,7 +47,7 @@ class Inbox extends Component {
   }
 
   getChats= async ()=>{
-    await fetch(`http://localhost:4000/inbox/get-chats?user=${this.state.user}`)
+    await fetch(`http://ec2-54-159-151-111.compute-1.amazonaws.com:5000/inbox/get-chats?user=${this.state.user}`)
     .then(response => response.json())
     .then(response => this.setState({chat_ids: response.data}))
     .catch(err => console.error(err))
@@ -60,7 +55,7 @@ class Inbox extends Component {
 
   handleIdChange = (chat_id) => {
     const time_stamp = this.state.chat_ids.filter(id => id.chat_id === chat_id).map(id=>id.time);
-    const arr = chat_id.split('_').filter(id => id!=this.state.user);
+    const arr = chat_id.split('_').filter(id => id !== this.state.user);
     const name = this.state.all_user.filter(user => arr.includes(`${user.id}`));
     this.setState({name: name});
     this.setState({create_chat: []});
@@ -94,9 +89,9 @@ class Inbox extends Component {
       else{
         const t1 = arr1[2].substring(0,5).split(':');
         const t2 = arr2[2].substring(0,5).split(':');
-        if(arr1[2].substring(6,8) == 'PM' && arr2[2].substring(6,8) != 'PM')
+        if(arr1[2].substring(6,8) === 'PM' && arr2[2].substring(6,8) !== 'PM')
           return -1;
-        else if(arr1[2].substring(6,8) != 'PM' && arr2[2].substring(6,8) == 'PM')
+        else if(arr1[2].substring(6,8) !== 'PM' && arr2[2].substring(6,8) === 'PM')
           return 1;
         else{
         if(t1[0] < t2[0])
@@ -116,7 +111,7 @@ class Inbox extends Component {
   }
 
   handleTime_Msg = async (time,msg) =>{
-    await fetch(`http://localhost:4000/time_stamp?chat_id=${this.state.chat_id[0]}&time=${time}&msg=${msg}`)
+    await fetch(`http://ec2-54-159-151-111.compute-1.amazonaws.com:5000/time_stamp?chat_id=${this.state.chat_id[0]}&time=${time}&msg=${msg}`)
     .then(this.setState({time_stamp: time}))
     .catch(err => console.error(err))
   }
@@ -162,7 +157,7 @@ class Inbox extends Component {
             />)
           )}
           {this.state.user && this.state.create_chat.map(()=>
-            <Create_chat
+            <CreateChat
               key = {1}
               chat_ids = {this.state.chat_ids}
               onChange = {this.handleIdChange}

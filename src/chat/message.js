@@ -26,7 +26,7 @@ class Message extends Component {
   }
 
   async clearNotification(){
-    await fetch(`http://localhost:4000/notification/clear?user=${this.props.user}&chat_id=${this.props.chat_id}`)
+    await fetch(`http://ec2-54-159-151-111.compute-1.amazonaws.com:5000/notification/clear?user=${this.props.user}&chat_id=${this.props.chat_id}`)
     .catch(err => console.error(err))
     this.props.update_inbox();
   }
@@ -64,12 +64,12 @@ class Message extends Component {
     const d = new Date();
     const time = `${weekday[d.getDay()]}, ${monthNames[d.getMonth()]} ${d.getDate()}, ${d.toLocaleTimeString([], { hour: '2-digit', minute: "2-digit" })}`;
     if(!this.props.time_stamp){
-      await fetch(`http://localhost:4000/message/add?id=0&sender=-1&msg=${time}&chat_id=${this.props.chat_id}`)
+      await fetch(`http://ec2-54-159-151-111.compute-1.amazonaws.com:5000/message/add?id=0&sender=-1&msg=${time}&chat_id=${this.props.chat_id}`)
       .catch(err => console.error(err))
     }
     else{
       if(this.timeComparison(this.props.time_stamp, time)){
-        await fetch(`http://localhost:4000/message/add?id=0&sender=-1&msg=${time}&chat_id=${this.props.chat_id}`)
+        await fetch(`http://ec2-54-159-151-111.compute-1.amazonaws.com:5000/message/add?id=0&sender=-1&msg=${time}&chat_id=${this.props.chat_id}`)
         .catch(err => console.error(err))
       }
     }
@@ -80,7 +80,7 @@ class Message extends Component {
     this.setState({isDelivered: false});
     this.updateNotifiaction();
     this.addTimestamp(msg);
-    await fetch(`http://localhost:4000/message/add?id=0&sender=${this.props.user}&msg=${this.state.msg}&chat_id=${this.props.chat_id}`)
+    await fetch(`http://ec2-54-159-151-111.compute-1.amazonaws.com:5000/message/add?id=0&sender=${this.props.user}&msg=${this.state.msg}&chat_id=${this.props.chat_id}`)
     .then(this.getMessages)
     .then(this.setState({msg:''}))
     .then(this.setState({isDelivered:true}))
@@ -89,7 +89,7 @@ class Message extends Component {
   }
 
   getMessages = async _ =>{
-    await fetch(`http://localhost:4000/message/get?chat_id=${this.props.chat_id}`)
+    await fetch(`http://ec2-54-159-151-111.compute-1.amazonaws.com:5000/message/get?chat_id=${this.props.chat_id}`)
     .then(response => response.json())
     .then(response => {this.setState({messages: response.data}); this.setState({isPending: false})})
     .catch(err => console.error(err))
@@ -98,7 +98,7 @@ class Message extends Component {
   }
 
   async updateNotifiaction(){
-    await fetch(`http://localhost:4000/notification/update?user=${this.props.user}&chat_id=${this.props.chat_id}`)
+    await fetch(`http://ec2-54-159-151-111.compute-1.amazonaws.com:5000/notification/update?user=${this.props.user}&chat_id=${this.props.chat_id}`)
     .catch(err => console.error(err))
   }
 
@@ -124,7 +124,7 @@ class Message extends Component {
   handleDelete= async ()=>{
     this.props.onChatDelete();
     console.log('delete');
-    await fetch(`http://localhost:4000/chat/delete?chat_id=${this.props.chat_id}`)
+    await fetch(`http://ec2-54-159-151-111.compute-1.amazonaws.com:5000/chat/delete?chat_id=${this.props.chat_id}`)
     .then(this.props.update_inbox())
     .catch(err => console.error(err))
   }

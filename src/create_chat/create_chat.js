@@ -1,8 +1,8 @@
 import react from 'react';
 import React, { Component } from 'react';
-import Create_chat_box from './create_chat_box';
+import CreateChatBox from './create_chat_box';
 
-class Create_chat extends Component {
+class CreateChat extends Component {
   state = {
     added_users: [],
     friends: [],
@@ -11,16 +11,12 @@ class Create_chat extends Component {
     filter_name: ''
   }
 
-  constructor(props){
-    super(props);
-  }
-
   componentDidMount(){
     this.getFriends();
   }
 
   getFriends = async _ =>{
-    await fetch('http://localhost:4000/users/get-all')
+    await fetch('http://ec2-54-159-151-111.compute-1.amazonaws.com:5000/users/get-all')
     .then(response => response.json())
     .then(response => this.setState({friends: response.data}))
     .catch(err => console.error(err))
@@ -32,11 +28,11 @@ class Create_chat extends Component {
   }
   
   handleRemove = (user) =>{
-    this.setState({added_users: [...this.state.added_users].filter(x => x!=user)});
+    this.setState({added_users: [...this.state.added_users].filter(x => x !== user)});
   }
 
   handleCreate=()=>{
-    if(this.state.added_users.length != 0){
+    if(this.state.added_users.length !== 0){
       const chat_id = this.state.added_users.map(user => user.id);
       chat_id.push(parseInt(this.props.user));
       const id = chat_id.sort().join('_');
@@ -55,7 +51,7 @@ class Create_chat extends Component {
       "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
       const d = new Date();
       const time = `${weekday[d.getDay()]}, ${monthNames[d.getMonth()]} ${d.getDate()}, ${d.toLocaleTimeString([], { hour: '2-digit', minute: "2-digit" })}`;
-      await fetch(`http://localhost:4000/chat/create?chat_id=${chat_id}&time=${time}&msg=${this.state.msg}`)
+      await fetch(`http://ec2-54-159-151-111.compute-1.amazonaws.com:5000/chat/create?chat_id=${chat_id}&time=${time}&msg=${this.state.msg}`)
       .then(this.addMessages(chat_id))
       .catch(err => console.error(err))
     }
@@ -82,12 +78,12 @@ class Create_chat extends Component {
     const time = `${weekday[d.getDay()]}, ${monthNames[d.getMonth()]} ${d.getDate()}, ${d.toLocaleTimeString([], { hour: '2-digit', minute: "2-digit" })}`;
     const time_stamp = this.props.chat_ids.filter(id => id.chat_id === chat_id).map(id=>id.time);
     if(!time_stamp[0]){
-      await fetch(`http://localhost:4000/message/add?id=0&sender=-1&msg=${time}&chat_id=${chat_id}`)
+      await fetch(`http://ec2-54-159-151-111.compute-1.amazonaws.com:5000/message/add?id=0&sender=-1&msg=${time}&chat_id=${chat_id}`)
       .catch(err => console.error(err))
     }
     else{
       if(this.timeComparison(time_stamp[0], time)){
-        await fetch(`http://localhost:4000/message/add?id=0&sender=-1&msg=${time}&chat_id=${chat_id}`)
+        await fetch(`http://ec2-54-159-151-111.compute-1.amazonaws.com:5000/message/add?id=0&sender=-1&msg=${time}&chat_id=${chat_id}`)
         .catch(err => console.error(err))
       }
     }
@@ -97,14 +93,14 @@ class Create_chat extends Component {
   async addMessages(chat_id){
     this.addTimestamp(chat_id);
     this.updateNotifiaction(chat_id);
-    await fetch(`http://localhost:4000/message/add?id=0&sender=${this.props.user}&msg=${this.state.msg}&chat_id=${chat_id}`)
+    await fetch(`http://ec2-54-159-151-111.compute-1.amazonaws.com:5000/message/add?id=0&sender=${this.props.user}&msg=${this.state.msg}&chat_id=${chat_id}`)
     .then(this.props.getChats)
     .then(this.props.onChange(chat_id))
     .catch(err => console.error(err))
   }
 
   async updateNotifiaction(chat_id){
-    await fetch(`http://localhost:4000/notification/update?user=${this.props.user}&chat_id=${chat_id}`)
+    await fetch(`http://ec2-54-159-151-111.compute-1.amazonaws.com:5000/notification/update?user=${this.props.user}&chat_id=${chat_id}`)
     .catch(err => console.error(err))
   }
 
@@ -131,15 +127,15 @@ class Create_chat extends Component {
   render() { 
     return <react.Fragment>
       <nav className="navbar navbar-light bg-light">
-        <a className="navbar-brand p-2" href="#">To: {this.state.added_users.map(user => user.name).join(', ')}</a>
+        <div className="navbar-brand p-2" href="">To: {this.state.added_users.map(user => user.name).join(', ')}</div>
         
       </nav>
       <input className='form-control' placeholder='Type to filter...' onChange={e => this.setState({filter_name: e.target.value})}/>
       <div id='message' style={this.styles}>
-        {this.state.friends.filter(friend => friend.id != this.props.user)
+        {this.state.friends.filter(friend => friend.id !== this.props.user)
         .filter(friend => !this.state.filter_name || friend.name.startsWith(this.state.filter_name))
         .map(friend =>(
-          <Create_chat_box
+          <CreateChatBox
             key = {friend.id}
             user = {friend}
             onAdd = {this.handleAdd}
@@ -156,5 +152,4 @@ class Create_chat extends Component {
     </react.Fragment>;
   }
 }
- //<button className='btn btn-primary badge rounded-pill p-2 m-2 bg-primary float-end' onClick={this.handleCreate}>Create</button>
-export default Create_chat;
+export default CreateChat;

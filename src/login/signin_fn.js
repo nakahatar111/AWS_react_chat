@@ -11,7 +11,7 @@ function SigninFn(props) {
     borderRadius: '0px'
   }
   const handleLogin = async () =>{
-    await fetch(`http://localhost:4000/users/get?username=${username}&password=${password}`)
+    await fetch(`http://ec2-54-159-151-111.compute-1.amazonaws.com:5000/users/get?username=${username}&password=${password}`)
     .then(response => response.json())
     .then(response => setLogin(response.data))
     .catch(err => console.error(err));

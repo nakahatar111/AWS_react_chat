@@ -3,36 +3,6 @@ const cors = require('cors');
 const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 
-/*
-  leave chat
-    add message when leave chat - center message and sender = -1
-    just delete row user from that chat_id thing
-    add row to database - removed                       -add database
-  think about implementing time
-    if(msg length > 0)
-      last time = get last msg - msg.time
-      current msg time
-      if difference greater than 1 hour
-        send admin message to chat with -1 and say the time
-    else (very first time)
-      say the time when sending message
-
-  add delivered message
-    use message add and have isPending thing,
-    add 'delivered' at the bottom of last message
-
-  notification                                           -add database
-    when msg sent, add 1 to inboxes.notification
-    in method, when message.get, inboxes.notification = 0;
-    when message is opened, user.notification for chat_id = 0;
-    if console
-      implement number to side (should be easy)
-
-  last message and time display
-    when getMessage, set props.last_msg and props.last_time
-    display with gray
-  add route for login
-*/
 const app = express();
 //localhost 192.168.1.156
 //global 71.105.80.238
@@ -47,6 +17,9 @@ connection.connect(err => {
   if(err){
     console.log(err);
     return err;
+  }
+  else{
+    console.log('connected')
   }
 });
 

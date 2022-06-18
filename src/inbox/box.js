@@ -1,8 +1,7 @@
 import react from 'react';
-import React, { Component } from 'react';
 
 
-class Box extends React.Component {
+class Box extends react.Component {
   state={
     name: ''
   }
