@@ -132,7 +132,7 @@ function SignupFn(props) {
   }
   const handleFetch = async () =>{
     if(v_user && v_email && v_password){
-      await fetch(`http://ec2-54-159-151-111.compute-1.amazonaws.com:5000/users/add?name=${v_user}&email=${v_email}&password=${v_password}`)
+      await fetch(`https://ec2-54-159-151-111.compute-1.amazonaws.com:5000/users/add?name=${v_user}&email=${v_email}&password=${v_password}`)
       //.then(handleLogin())
       .catch(err => console.error(err));
       navigate(`../signin/log`, { replace: true });

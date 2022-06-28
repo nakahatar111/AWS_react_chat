@@ -16,7 +16,7 @@ class CreateChat extends Component {
   }
 
   getFriends = async _ =>{
-    await fetch('http://ec2-54-159-151-111.compute-1.amazonaws.com:5000/users/get-all')
+    await fetch('https://ec2-54-159-151-111.compute-1.amazonaws.com:5000/users/get-all')
     .then(response => response.json())
     .then(response => this.setState({friends: response.data}))
     .catch(err => console.error(err))
@@ -51,7 +51,7 @@ class CreateChat extends Component {
       "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
       const d = new Date();
       const time = `${weekday[d.getDay()]}, ${monthNames[d.getMonth()]} ${d.getDate()}, ${d.toLocaleTimeString([], { hour: '2-digit', minute: "2-digit" })}`;
-      await fetch(`http://ec2-54-159-151-111.compute-1.amazonaws.com:5000/chat/create?chat_id=${chat_id}&time=${time}&msg=${this.state.msg}`)
+      await fetch(`https://ec2-54-159-151-111.compute-1.amazonaws.com:5000/chat/create?chat_id=${chat_id}&time=${time}&msg=${this.state.msg}`)
       .then(this.addMessages(chat_id))
       .catch(err => console.error(err))
     }
@@ -78,12 +78,12 @@ class CreateChat extends Component {
     const time = `${weekday[d.getDay()]}, ${monthNames[d.getMonth()]} ${d.getDate()}, ${d.toLocaleTimeString([], { hour: '2-digit', minute: "2-digit" })}`;
     const time_stamp = this.props.chat_ids.filter(id => id.chat_id === chat_id).map(id=>id.time);
     if(!time_stamp[0]){
-      await fetch(`http://ec2-54-159-151-111.compute-1.amazonaws.com:5000/message/add?id=0&sender=-1&msg=${time}&chat_id=${chat_id}`)
+      await fetch(`https://ec2-54-159-151-111.compute-1.amazonaws.com:5000/message/add?id=0&sender=-1&msg=${time}&chat_id=${chat_id}`)
       .catch(err => console.error(err))
     }
     else{
       if(this.timeComparison(time_stamp[0], time)){
-        await fetch(`http://ec2-54-159-151-111.compute-1.amazonaws.com:5000/message/add?id=0&sender=-1&msg=${time}&chat_id=${chat_id}`)
+        await fetch(`https://ec2-54-159-151-111.compute-1.amazonaws.com:5000/message/add?id=0&sender=-1&msg=${time}&chat_id=${chat_id}`)
         .catch(err => console.error(err))
       }
     }
@@ -93,14 +93,14 @@ class CreateChat extends Component {
   async addMessages(chat_id){
     this.addTimestamp(chat_id);
     this.updateNotifiaction(chat_id);
-    await fetch(`http://ec2-54-159-151-111.compute-1.amazonaws.com:5000/message/add?id=0&sender=${this.props.user}&msg=${this.state.msg}&chat_id=${chat_id}`)
+    await fetch(`https://ec2-54-159-151-111.compute-1.amazonaws.com:5000/message/add?id=0&sender=${this.props.user}&msg=${this.state.msg}&chat_id=${chat_id}`)
     .then(this.props.getChats)
     .then(this.props.onChange(chat_id))
     .catch(err => console.error(err))
   }
 
   async updateNotifiaction(chat_id){
-    await fetch(`http://ec2-54-159-151-111.compute-1.amazonaws.com:5000/notification/update?user=${this.props.user}&chat_id=${chat_id}`)
+    await fetch(`https://ec2-54-159-151-111.compute-1.amazonaws.com:5000/notification/update?user=${this.props.user}&chat_id=${chat_id}`)
     .catch(err => console.error(err))
   }
 

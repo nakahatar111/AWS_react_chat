@@ -22,7 +22,7 @@ function LoginFn() {
   }
   
   const fetchUsers = async () =>{
-    await fetch('http://ec2-54-159-151-111.compute-1.amazonaws.com:5000/users/get-all')
+    await fetch('https://ec2-54-159-151-111.compute-1.amazonaws.com:5000/users/get-all')
     .then(response => response.json())
     .then(response =>  setAlluser(response.data))
     .catch(err => console.error(err));

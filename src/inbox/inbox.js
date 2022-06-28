@@ -47,7 +47,7 @@ class Inbox extends Component {
   }
 
   getChats= async ()=>{
-    await fetch(`http://ec2-54-159-151-111.compute-1.amazonaws.com:5000/inbox/get-chats?user=${this.state.user}`)
+    await fetch(`https://ec2-54-159-151-111.compute-1.amazonaws.com:5000/inbox/get-chats?user=${this.state.user}`)
     .then(response => response.json())
     .then(response => this.setState({chat_ids: response.data}))
     .catch(err => console.error(err))
@@ -111,7 +111,7 @@ class Inbox extends Component {
   }
 
   handleTime_Msg = async (time,msg) =>{
-    await fetch(`http://ec2-54-159-151-111.compute-1.amazonaws.com:5000/time_stamp?chat_id=${this.state.chat_id[0]}&time=${time}&msg=${msg}`)
+    await fetch(`https://ec2-54-159-151-111.compute-1.amazonaws.com:5000/time_stamp?chat_id=${this.state.chat_id[0]}&time=${time}&msg=${msg}`)
     .then(this.setState({time_stamp: time}))
     .catch(err => console.error(err))
   }
