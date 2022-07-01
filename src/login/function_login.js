@@ -7,6 +7,7 @@ import Inbox from '../inbox/inbox';
 import SignupFn from './signup_fn';
 
 function LoginFn() {
+  const [serverConnection, setConnection] = useState(0);
   const [user, setUser] = useState('');
   const [alluser, setAlluser] = useState([]);
 
@@ -25,7 +26,10 @@ function LoginFn() {
     await fetch('https://ec2-54-159-151-111.compute-1.amazonaws.com:5000/users/get-all')
     .then(response => response.json())
     .then(response =>  setAlluser(response.data))
-    .catch(err => console.error(err));
+    .catch(err => {
+      console.error(err)
+      setConnection(1)
+    });
   }
 
   useEffect(()=>{
@@ -49,6 +53,11 @@ function LoginFn() {
         </Container> 
         <span className='float-end' style={{color: '#ecebe9', minWidth:'240px'}}>{user && 'Welcome, '+ user.name} {user && <HandleLogOut/>}</span>
       </Navbar>
+      {serverConnection === 1 && <div className='mt-4 d-flex justify-content-center text-center'>
+        <div className="alert alert-danger" style={{width:'300px', fontSize:'20px'}} role="alert">
+          Server is currently down, contact the developer
+        </div>
+      </div>}
 
       <Routes>
         <Route path = '/' element = {<SignupFn onChangeUser = {handleUser}/>}/>
