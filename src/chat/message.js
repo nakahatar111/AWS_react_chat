@@ -12,9 +12,9 @@ class Message extends Component {
     msg_num: 0
   }
 
-  constructor(props){
-    super(props);
-  }
+  //constructor(props){
+    //super(props);
+  //}
 
   componentDidMount(){
     this.setState({sender: this.props.user});
@@ -118,6 +118,7 @@ class Message extends Component {
   handleKeyPress = (e)=>{
     if(this.state.msg.length !== 0 && e.code === 'Enter'){
       this.addMessages(this.state.msg);
+      document.getElementById('msg-box').value = ''
     }
   }
 

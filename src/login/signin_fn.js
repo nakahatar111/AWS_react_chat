@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
 function SigninFn(props) {
+
   let navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -10,6 +11,7 @@ function SigninFn(props) {
     borderWidth: '0px 0px 1px 0px',
     borderRadius: '0px'
   }
+
   const handleLogin = async () =>{
     await fetch(`https://ec2-54-159-151-111.compute-1.amazonaws.com:5000/users/get?username=${username}&password=${password}`)
     .then(response => response.json())
@@ -29,10 +31,16 @@ function SigninFn(props) {
     }
   },[login])
 
+  const handleKeyPress = (e) =>{
+    if(username && password && e.code === 'Enter'){
+      handleLogin()
+    }
+  }
+
   return <React.Fragment>
   <div className="container justify-content-center" style={{height:'60vh', display: 'flex', alignItems: 'center',width: '80vw' }}>
       <div style={{minWidth: '350px', width: '30vw'}}>
-          <div style={{width: '90%', margin: '0 auto', boxShadow:'0px 8px 15px #888888'}} className='p-5'>
+          <div style={{width: '90%', margin: '0 auto', boxShadow:'0px 8px 15px #888888'}} className='p-5' onKeyPress={handleKeyPress}>
           <h2 className='p-2' style={{fontWeight: '700'}}>Sign In</h2>
             <div>
               <ErrMsg valid_login = {props.valid_login}/>
